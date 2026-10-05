@@ -164,8 +164,9 @@ def livelli(nome, prezzo):
 
 
 def invia(testo):
-    requests.post(f"{API}/sendMessage",
-                  data={"chat_id": CHAT_ID, "text": testo}, timeout=20)
+    r = requests.post(f"{API}/sendMessage",
+                      data={"chat_id": CHAT_ID, "text": testo}, timeout=20)
+    print("sendMessage:", r.status_code, r.text[:150], flush=True)
 
 
 stato = None
@@ -174,8 +175,12 @@ visti = deque(maxlen=200)
 
 def gestisci(u):
     global stato
-    m = u.get("message")
-    if not m or m["chat"]["id"] != CHAT_ID or "text" not in m:
+           m = u.get("message")
+    if not m or "text" not in m:
+        print("update senza testo:", str(u)[:150], flush=True)
+        return
+    if m["chat"]["id"] != CHAT_ID:
+        print("chat diversa da CHAT_ID:", m["chat"]["id"], flush=True)
         return
     t = m["text"].strip()
     try:
