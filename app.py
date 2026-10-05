@@ -175,7 +175,7 @@ visti = deque(maxlen=200)
 
 def gestisci(u):
     global stato
-           m = u.get("message")
+    m = u.get("message")
     if not m or "text" not in m:
         print("update senza testo:", str(u)[:150], flush=True)
         return
@@ -206,6 +206,7 @@ def gestisci(u):
             invia("Non ho capito. Scrivi /start per il report, il nome di uno strumento, "
                   "oppure nome e prezzo insieme (esempio: oro 4162.3).")
     except Exception as e:
+        print("errore:", repr(e), flush=True)
         invia(f"Errore: {e}")
 
 
